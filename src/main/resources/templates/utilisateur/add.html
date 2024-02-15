@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un Utilisateur</title>
+</head>
+<body>
+<h2>Ajouter un Utilisateur</h2>
+<form action="/utilisateur/add" method="post" th:object="${utilisateur}">
+    <label>Nom: <input type="text" th:field="*{nom}" required/></label><br/>
+    <label>Prénom: <input type="text" th:field="*{prenom}" required/></label><br/>
+    <!-- Ajoutez d'autres champs en fonction de votre entité -->
+    <button type="submit">Ajouter</button>
+</form>
+</body>
+</html>

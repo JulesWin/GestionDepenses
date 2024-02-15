@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu des Utilisateurs</title>
+  <!-- Ajoutez les liens vers Bootstrap ou tout autre CSS nécessaire -->
+</head>
+<body>
+
+<div class="container">
+  <h2>Menu des Utilisateurs</h2>
+
+  <a class="btn btn-primary" th:href="@{/utilisateur/add}">Ajouter un Utilisateur</a>
+
+  <table class="table mt-3">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Prénom</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="utilisateur : ${utilisateurs}">
+      <td th:text="${utilisateur.idUser}"></td>
+      <td th:text="${utilisateur.nom}"></td>
+      <td th:text="${utilisateur.prenom}"></td>
+      <td>
+        <a class="btn btn-warning btn-sm" th:href="@{'/utilisateur/edit/' + ${utilisateur.idUser}}">Modifier</a>
+        <a class="btn btn-danger btn-sm" th:href="@{'/utilisateur/delete/' + ${utilisateur.idUser}}">Supprimer</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

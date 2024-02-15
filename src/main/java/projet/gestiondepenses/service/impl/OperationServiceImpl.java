@@ -1,0 +1,48 @@
+package projet.gestiondepenses.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import projet.gestiondepenses.model.Operation;
+import projet.gestiondepenses.repository.OperationRepository;
+import projet.gestiondepenses.service.OperationService;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class OperationServiceImpl implements OperationService {
+
+    private final OperationRepository operationRepository;
+
+    @Autowired
+    public OperationServiceImpl(OperationRepository operationRepository) {
+        this.operationRepository = operationRepository;
+    }
+
+    @Override
+    public List<Operation> getAllOperations() {
+        return operationRepository.findAll();
+    }
+
+    @Override
+    public Operation persistOperation(Operation operation) {
+        // Logique métier éventuelle
+        return operationRepository.save(operation);
+    }
+
+    @Override
+    public Optional<Operation> getOperationById(Long id) {
+        return operationRepository.findById(id);
+    }
+
+    @Override
+    public Operation updateOperation(Operation operation) {
+        // Logique métier éventuelle
+        return operationRepository.save(operation);
+    }
+
+    @Override
+    public void deleteOperationById(Long id) {
+        operationRepository.deleteById(id);
+    }
+}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modifier un Utilisateur</title>
+</head>
+<body>
+
+<div class="container">
+  <h2>Modifier un Utilisateur</h2>
+
+  <form action="/utilisateur/edit" method="get" th:object="${utilisateur}">
+    <input type="hidden" th:field="*{idUser}"/>
+    <label>Nom: <input type="text" th:field="*{nom}" required/></label><br/>
+    <label>Prénom: <input type="text" th:field="*{prenom}" required/></label><br/>
+    <!-- Ajoutez d'autres champs en fonction de votre entité -->
+    <button type="submit" class="btn btn-primary">Modifier</button>
+  </form>
+</div>
+
+</body>
+</html>
