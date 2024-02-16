@@ -35,16 +35,36 @@ public class UtilisateurController {
     }
     @GetMapping("/edit/{id}")
     public String editUtilisateurForm(@PathVariable Long id, Model model) {
-        Optional<Utilisateur> utilisateur = utilisateurService.getUtilisateurById(id);
-        model.addAttribute("utilisateur", utilisateur);
-        return "utilisateur/edit";
+        Optional<Utilisateur> utilisateurOptional = utilisateurService.getUtilisateurById(id);
+
+        if (utilisateurOptional.isPresent()) {
+            Utilisateur utilisateur = utilisateurOptional.get();
+            model.addAttribute("utilisateur", utilisateur);
+            return "utilisateur/edit";
+        } else {
+            // Gérez le cas où l'utilisateur avec l'ID spécifié n'est pas trouvé
+            return "redirect:/utilisateur/list";
+        }
     }
 
     @PostMapping("/edit/{id}")
     public String editUtilisateur(@PathVariable Long id, @ModelAttribute Utilisateur utilisateur) {
-        // Mettez à jour les informations de l'utilisateur avec le service
-        utilisateurService.updateUtilisateur(utilisateur);
-        return "redirect:/utilisateur/list";
+        // Récupérer l'utilisateur existant
+        Utilisateur existingUtilisateur = utilisateurService.getUtilisateurById(id).orElse(null);
+
+        if (existingUtilisateur != null) {
+            // Mettre à jour les propriétés de l'utilisateur existant
+            existingUtilisateur.setNom(utilisateur.getNom());
+            existingUtilisateur.setPrenom(utilisateur.getPrenom());
+            // Mettez à jour d'autres propriétés en fonction de votre modèle Utilisateur
+
+            // Enregistrez les modifications
+            utilisateurService.updateUtilisateur(existingUtilisateur);
+            return "redirect:/utilisateur";
+        } else {
+            // Gérer le cas où l'utilisateur avec l'ID spécifié n'est pas trouvé
+            return "redirect:/utilisateur";
+        }
     }
 
     @GetMapping("/delete/{id}")

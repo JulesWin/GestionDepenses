@@ -10,13 +10,15 @@
 <div class="container">
   <h2>Modifier un Utilisateur</h2>
 
-  <form action="/utilisateur/edit" method="get" th:object="${utilisateur}">
+  <form th:action="@{/utilisateur/edit/{id}(id=${utilisateur.idUser})}" method="post" th:object="${utilisateur}">
     <input type="hidden" th:field="*{idUser}"/>
     <label>Nom: <input type="text" th:field="*{nom}" required/></label><br/>
     <label>Prénom: <input type="text" th:field="*{prenom}" required/></label><br/>
     <!-- Ajoutez d'autres champs en fonction de votre entité -->
     <button type="submit" class="btn btn-primary">Modifier</button>
   </form>
+
+
 </div>
 
 </body>
