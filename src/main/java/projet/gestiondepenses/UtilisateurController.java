@@ -53,10 +53,9 @@ public class UtilisateurController {
         Utilisateur existingUtilisateur = utilisateurService.getUtilisateurById(id).orElse(null);
 
         if (existingUtilisateur != null) {
-            // Mettre à jour les propriétés de l'utilisateur existant
             existingUtilisateur.setNom(utilisateur.getNom());
             existingUtilisateur.setPrenom(utilisateur.getPrenom());
-            // Mettez à jour d'autres propriétés en fonction de votre modèle Utilisateur
+            existingUtilisateur.setMail(utilisateur.getMail());
 
             // Enregistrez les modifications
             utilisateurService.updateUtilisateur(existingUtilisateur);

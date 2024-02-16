@@ -4,22 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Menu des Utilisateurs</title>
-  <!-- Ajoutez les liens vers Bootstrap ou tout autre CSS nécessaire -->
+  <!-- Ajoutez le lien vers Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 
-<div class="container">
-  <h2>Menu des Utilisateurs</h2>
+<div class="container mt-5">
+  <h2 class="mb-4">Menu des Utilisateurs</h2>
 
-  <a class="btn btn-primary" th:href="@{/utilisateur/add}">Ajouter un Utilisateur</a>
+  <a class="btn btn-primary mb-3" th:href="@{/utilisateur/add}">Ajouter un Utilisateur</a>
 
-  <table class="table mt-3">
-    <thead>
+  <table class="table">
+    <thead class="thead-dark">
     <tr>
-      <th>ID</th>
-      <th>Nom</th>
-      <th>Prénom</th>
-      <th>Actions</th>
+      <th scope="col">ID</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Prénom</th>
+      <th scope="col">Mail</th>
+      <th scope="col">MotDePasse</th>
+      <th scope="col">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -27,6 +30,8 @@
       <td th:text="${utilisateur.idUser}"></td>
       <td th:text="${utilisateur.nom}"></td>
       <td th:text="${utilisateur.prenom}"></td>
+      <td th:text="${utilisateur.mail}"></td>
+      <td th:text="${utilisateur.motDePasse}"></td>
       <td>
         <a class="btn btn-warning btn-sm" th:href="@{'/utilisateur/edit/' + ${utilisateur.idUser}}">Modifier</a>
         <a class="btn btn-danger btn-sm" th:href="@{'/utilisateur/delete/' + ${utilisateur.idUser}}">Supprimer</a>
@@ -35,6 +40,11 @@
     </tbody>
   </table>
 </div>
+
+<!-- Ajoutez le script Bootstrap JS et jQuery si nécessaire -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 </body>
 </html>

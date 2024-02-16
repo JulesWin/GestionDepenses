@@ -10,6 +10,7 @@
 <form action="/utilisateur/add" method="post" th:object="${utilisateur}">
     <label>Nom: <input type="text" th:field="*{nom}" required/></label><br/>
     <label>Prénom: <input type="text" th:field="*{prenom}" required/></label><br/>
+    <label>Mail: <input type="text" th:field="*{mail}" required/></label><br/>
     <!-- Ajoutez d'autres champs en fonction de votre entité -->
     <button type="submit">Ajouter</button>
 </form>
