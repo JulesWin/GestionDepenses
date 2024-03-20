@@ -19,6 +19,7 @@ import projet.gestiondepenses.service.TypeDepenseService;
 import projet.gestiondepenses.service.UtilisateurService;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,18 +49,33 @@ public class UserController {
 
     @GetMapping("/home")
     public String afficherAccueilClient(Model model) {
-        List<Object[]> operationSummaryList = operationRepository.getTotalOperationsSummaryForUser1();
-
+        // Par défaut, afficher les opérations pour le mois et l'année actuels
+        int currentMonth = LocalDate.now().getMonthValue();
+        int currentYear = LocalDate.now().getYear();
+        List<Object[]> operationSummaryList = operationRepository.getTotalOperationsSummaryForUser1ByMonthAndYear(currentMonth, currentYear);
         List<List<String>> operationDetailsList = new ArrayList<>();
         for (Object[] summary : operationSummaryList) {
-            List<String> details = operationRepository.getOperationDetailsForTypeDepense((String) summary[0]);
+            List<String> details = operationRepository.getOperationDetailsForTypeDepenseByMonthAndYear((String) summary[0], currentMonth, currentYear);
             operationDetailsList.add(details);
         }
         model.addAttribute("operationSummaryList", operationSummaryList);
         model.addAttribute("operationDetailsList", operationDetailsList);
-
         return "user/home";
     }
+
+    @GetMapping("/home/{year}/{month}")
+    public String afficherAccueilClientParMoisAnnee(@PathVariable int year, @PathVariable int month, Model model) {
+        List<Object[]> operationSummaryList = operationRepository.getTotalOperationsSummaryForUser1ByMonthAndYear(month, year);
+        List<List<String>> operationDetailsList = new ArrayList<>();
+        for (Object[] summary : operationSummaryList) {
+            List<String> details = operationRepository.getOperationDetailsForTypeDepenseByMonthAndYear((String) summary[0], month, year);
+            operationDetailsList.add(details);
+        }
+        model.addAttribute("operationSummaryList", operationSummaryList);
+        model.addAttribute("operationDetailsList", operationDetailsList);
+        return "user/home";
+    }
+
 
 
     @GetMapping("/modifier-limite/{typeDepenseId}")
@@ -71,9 +87,12 @@ public class UserController {
         if (limitation != null) {
             model.addAttribute("limitation", limitation);
         } else {
+            // Si la limite n'existe pas, créez une nouvelle instance avec les valeurs par défaut
             limitation = new Limitation();
             limitation.setUtilisateur(utilisateur);
             limitation.setTypeDepense(typeDepenseRepository.findById(typeDepenseId).orElse(null));
+
+            model.addAttribute("limitation", limitation);
         }
         model.addAttribute("typeDepenseId", typeDepenseId);
         return "user/modifier_limite"; // Vue HTML
@@ -110,26 +129,57 @@ public class UserController {
 
     @PostMapping("/operation/add")
     public String addOperation(@ModelAttribute Operation operation, @RequestParam("idTypeDep") Long idTypeDep) {
-        // Convertir l'ID du type de dépense en une instance persistante de TypeDepense
         TypeDepense typeDepense = typeDepenseService.getTypeDepenseById(idTypeDep)
                 .orElseThrow(() -> new RuntimeException("TypeDepense not found with ID: " + idTypeDep));
 
-        // Utiliser l'utilisateur avec l'ID 1
         Utilisateur utilisateur = utilisateurService.getUtilisateurById(1L)
                 .orElseThrow(() -> new RuntimeException("Utilisateur not found with ID: 1"));
 
-        // Utiliser la date actuelle avec les heures et les minutes
-        operation.setDateDep(new Date()); // Utilisation de java.util.Date pour la date actuelle
+        operation.setDateDep(new Date());
 
-        // Assigner le type de dépense et l'utilisateur à l'opération
         operation.setTypeDepense(typeDepense);
         operation.setUtilisateur(utilisateur);
 
         // Persistez l'opération avec les détails corrects
         operationService.persistOperation(operation);
 
-        return "redirect:/user/home"; // Rediriger vers la page d'accueil de l'utilisateur
+        return "redirect:/user/home";
     }
 
+    @GetMapping("/edit")
+    public String editUserProfileForm(Model model) {
+        Optional<Utilisateur> utilisateurOptional = utilisateurService.getUtilisateurById(1L);
+
+        if (utilisateurOptional.isPresent()) {
+            Utilisateur utilisateur = utilisateurOptional.get();
+            model.addAttribute("utilisateur", utilisateur);
+            return "user/edit_profile"; // Vue HTML
+        } else {
+            // Gérez le cas où l'utilisateur avec l'ID 1 n'est pas trouvé
+            return "redirect:/user/home"; // Redirigez vers une page appropriée
+        }
+    }
+
+    @PostMapping("/edit")
+    public String editUserProfile(@ModelAttribute Utilisateur utilisateur) {
+        Utilisateur existingUtilisateur = utilisateurService.getUtilisateurById(1L).orElse(null);
+
+        if (existingUtilisateur != null) {
+            // Mettez à jour les champs du profil
+            existingUtilisateur.setNom(utilisateur.getNom());
+            existingUtilisateur.setPrenom(utilisateur.getPrenom());
+            existingUtilisateur.setMail(utilisateur.getMail());
+            // Enregistrez les modifications
+            utilisateurService.updateUtilisateur(existingUtilisateur);
+            return "redirect:/user/home"; // Redirigez vers une page appropriée
+        } else {
+            return "redirect:/user/home"; // Redirigez vers une page appropriée
+        }
+    }
+
+    @GetMapping("/suggestion")
+    public String showSuggestionsPage() {
+        return "user/suggestion";
+    }
 
 }

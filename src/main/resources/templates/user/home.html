@@ -71,20 +71,81 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link active" href="/">Mes dépenses</a>
+        <a class="nav-link active" href="/user/home">Mes dépenses</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/">Mon profil</a>
+        <a class="nav-link" href="/user/edit">Mon profil</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/">Paramètres</a>
+        <a class="nav-link" href="/user/suggestion">Suggestion</a>
       </li>
     </ul>
   </div>
 </nav>
-<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <h5>Ajouter une opération</h5><br>
+      <button onclick="window.location.href='/user/operation/add'" class="btn btn-primary mb-3">Ajouter une Opération</button>
+    </div>
+    <div class="col-md-9">
+      <h5>Changer de période</h5>
+      <div class="row" style="text-align: center;">
+        <!-- Formulaire de sélection du mois -->
+        <div class="col-md-6">
+          <form id="monthYearForm">
+            <label for="month">Mois :</label>
+            <select name="month" id="month" class="form-control form-control-sm">
+              <option value="1">Janvier</option>
+              <option value="2">Février</option>
+              <option value="3" selected>Mars</option>
+              <option value="4">Avril</option>
+              <option value="5">Mai</option>
+              <option value="6">Juin</option>
+              <option value="7">Juillet</option>
+              <option value="8">Août</option>
+              <option value="9">Septembre</option>
+              <option value="10">Octobre</option>
+              <option value="11">Novembre</option>
+              <option value="12">Décembre</option>
+            </select>
+        </div>
+        <!-- Formulaire de sélection de l'année -->
+        <div class="col-md-6">
+          <label for="year">Année :</label>
+          <select name="year" id="year" class="form-control form-control-sm">
+            <option value="2024" selected>2024</option>
+            <option value="2023">2023</option>
+            <!-- Ajoutez les années nécessaires ici -->
+          </select>
+        </div>
+        <!-- Bouton de soumission -->
+        <div class="col-md-12 mt-4">
+          <button style="height: 100%;" type="button" class="btn btn-primary btn-sm" onclick="submitForm()">Changer période</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+  function submitForm() {
+    var month = document.getElementById('month').value;
+    var year = document.getElementById('year').value;
+    window.location.href = '/user/home/' + year + '/' + month;
+  }
+</script>
+
+
+
+
 
 <div class="container">
+
   <div class="row mt-3">
     <div th:each="summary, index : ${operationSummaryList}" class="col-md-6">
       <div class="card">
@@ -96,7 +157,7 @@
                    th:attr="style='width: ' + (${summary[2] != null ? summary[1] * 100 / summary[2] : 100}) + '%'"
                    style="color: #ffffff;"></div>
             </div>
-            <span class="progress-label"
+            <span class="progress-label " style="color: black;"
                   th:text="|${summary[1]} / ${summary[2] != null ? summary[2] : 'Pas de limite'}|"></span>
           </div>
           <!-- Bouton pour modifier la limite -->
@@ -104,45 +165,42 @@
              th:href="@{/user/modifier-limite/{typeDepenseId}(typeDepenseId=${summary[3]})}"
              class="btn btn-primary btn-modify-limit mt-2">Modifier la limite</a>
           <!-- Bouton pour afficher/masquer la liste des opérations -->
-          <button class="btn btn-secondary btn-toggle-list mt-2"
-                  data-target="#operation-list-${index}">Afficher/masquer les opérations</button>
-          <!-- Liste des opérations (dans le tiroir) -->
-          <div id="operation-list-${index}" class="drawer" style="display: none;">
-            <ul class="list-group mt-3">
-              <li class="list-group-item" th:each="detail : ${operationDetailsList[index.index]}"
-                  th:text="${detail}"></li>
-            </ul>
-          </div>
+          <!-- Bouton pour afficher/masquer la liste des opérations -->
+          <button class="btn btn-secondary btn-toggle-list mt-2">Afficher/masquer les opérations</button>
+          <!-- Liste des opérations -->
+          <ul class="list-group mt-3 operation-list">
+            <li class="list-group-item" th:each="detail : ${operationDetailsList[index.index]}" th:text="${detail}"></li>
+          </ul>
         </div>
-      </div>
+      </div><br>
     </div>
   </div>
 </div>
 
-<!-- Ajoutez ce script JavaScript pour gérer l'affichage/masquage du tiroir -->
+
 <script>
-  document.querySelectorAll('.btn-toggle-list').forEach(button => {
-    button.addEventListener('click', () => {
-      const target = document.querySelector(button.dataset.target);
-      if (target) {
-        target.classList.toggle('open');
-      }
+  var toggleButtons = document.querySelectorAll('.btn-toggle-list');
+
+  toggleButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      var parentCard = this.closest('.card');
+      var operationList = parentCard.querySelector('.operation-list');
+      operationList.style.display = operationList.style.display === 'none' ? 'block' : 'none';
     });
   });
 </script>
 
+
+
+
 <!-- Ajoutez ce style CSS pour styliser le tiroir -->
 <style>
-  .drawer {
-    background-color: #f8f9fa;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-top: none;
+  .operation-list {
+    display: none;
   }
-  .drawer.open {
-    display: block;
-  }
+
 </style>
+
 
 
 

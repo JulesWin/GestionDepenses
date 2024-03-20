@@ -9,7 +9,11 @@ public interface OperationService {
     Optional<Operation> getOperationById(Long id);
     Operation updateOperation(Operation operation);
     void deleteOperationById(Long id);
-    List<Object[]>getTotalOperationsSummaryForUser1();
-    List<String> getOperationDetailsForTypeDepense(String typeDepense);
+    //List<Object[]>getTotalOperationsSummaryForUser1();
+    //List<String> getOperationDetailsForTypeDepense(String typeDepense);
 
+    // Nouvelles méthodes pour les opérations par mois et année
+    List<Object[]> getTotalOperationsSummaryForUser1ByMonthAndYear(int month, int year);
+
+    List<String> getOperationDetailsForTypeDepenseByMonthAndYear(String typeDepense, int month, int year);
 }

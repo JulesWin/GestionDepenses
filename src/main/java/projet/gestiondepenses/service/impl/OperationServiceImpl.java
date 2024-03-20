@@ -46,7 +46,7 @@ public class OperationServiceImpl implements OperationService {
         operationRepository.deleteById(id);
     }
 
-    @Override
+    /*@Override
     public List<Object[]> getTotalOperationsSummaryForUser1() {
         return operationRepository.getTotalOperationsSummaryForUser1();
     }
@@ -54,6 +54,16 @@ public class OperationServiceImpl implements OperationService {
     @Override
     public List<String> getOperationDetailsForTypeDepense(String typeDepense) {
         return operationRepository.getOperationDetailsForTypeDepense(typeDepense);
+    }*/
+
+    // Nouvelles méthodes pour les opérations par mois et année
+    @Override
+    public List<Object[]> getTotalOperationsSummaryForUser1ByMonthAndYear(int month, int year) {
+        return operationRepository.getTotalOperationsSummaryForUser1ByMonthAndYear(month, year);
     }
 
+    @Override
+    public List<String> getOperationDetailsForTypeDepenseByMonthAndYear(String typeDepense, int month, int year) {
+        return operationRepository.getOperationDetailsForTypeDepenseByMonthAndYear(typeDepense, month, year);
+    }
 }

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier le Profil</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="http://localhost:8080/">Gestion des dépenses</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/user/home">Mes dépenses</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/user/edit">Mon profil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/suggestion">Suggestion</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>Modifier le Profil</h2>
+
+    <form th:action="@{/user/edit}" method="post" th:object="${utilisateur}" class="needs-validation" novalidate>
+        <input type="hidden" th:field="*{idUser}"/>
+
+        <!-- Nom -->
+        <div class="form-group">
+            <label for="nom">Nom:</label>
+            <input type="text" class="form-control" id="nom" th:field="*{nom}" required/>
+            <div class="invalid-feedback">Veuillez entrer votre nom.</div>
+        </div>
+
+        <!-- Prénom -->
+        <div class="form-group">
+            <label for="prenom">Prénom:</label>
+            <input type="text" class="form-control" id="prenom" th:field="*{prenom}" required/>
+            <div class="invalid-feedback">Veuillez entrer votre prénom.</div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+            <label for="mail">Email:</label>
+            <input type="email" class="form-control" id="mail" th:field="*{mail}" required/>
+            <div class="invalid-feedback">Veuillez entrer une adresse email valide.</div>
+        </div>
+
+        <!-- Mot de passe -->
+        <div class="form-group">
+            <label for="motDePasse">Mot de passe:</label>
+            <input type="password" class="form-control" id="motDePasse" th:field="*{motDePasse}"/>
+        </div>
+
+        <!-- Ajoutez d'autres champs en fonction de votre entité -->
+
+        <button type="submit" class="btn btn-primary">Modifier</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    // Ajouter la logique de validation des formulaires Bootstrap
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+
+</body>
+</html>
