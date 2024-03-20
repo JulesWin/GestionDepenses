@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajouter un Utilisateur</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 <h2>Ajouter un Utilisateur</h2>
@@ -11,6 +12,10 @@
     <label>Nom: <input type="text" th:field="*{nom}" required/></label><br/>
     <label>Prénom: <input type="text" th:field="*{prenom}" required/></label><br/>
     <label>Mail: <input type="text" th:field="*{mail}" required/></label><br/>
+    <label for="roles">Rôles:</label>
+    <select id="roles" name="roles" multiple>
+        <option th:each="role : ${allRoles}" th:value="${role.idRole}" th:text="${role.nomRole}"></option>
+    </select>
     <!-- Ajoutez d'autres champs en fonction de votre entité -->
     <button type="submit">Ajouter</button>
 </form>

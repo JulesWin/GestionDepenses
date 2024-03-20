@@ -18,6 +18,15 @@ public class Limitation {
     @JoinColumn(name = "idTypeDep")
     private TypeDepense typeDepense;
 
+    /*@ManyToOne
+    @JoinColumn(name = "id_user") // Nom de la colonne dans la base de données pour l'utilisateur
+    private Utilisateur utilisateur;
+
+    @ManyToOne
+    @JoinColumn(name = "id_type_dep") // Nom de la colonne dans la base de données pour le type de dépense
+    private TypeDepense typeDepense;*/
+
+
     private Double montantLim;
 
     // Constructeur par défaut

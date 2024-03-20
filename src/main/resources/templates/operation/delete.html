@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+ <!DOCTYPE html>
+    <html lang="fr" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Supprimer une Opération</title>
+    </head>
+    <body>
+
+    <div class="container">
+        <h2>Supprimer une Opération</h2>
+
+        <form action="@{/operation/delete/{id}}" method="post" th:object="${operation}">
+            <input type="hidden" name="id" th:value="*{idDep}"/>
+            <p>Voulez-vous vraiment supprimer cette opération ?</p>
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form>
+    </div>
+
+    </body>
+    </html>

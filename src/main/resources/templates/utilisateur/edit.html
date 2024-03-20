@@ -15,6 +15,10 @@
     <label>Nom: <input type="text" th:field="*{nom}" required/></label><br/>
     <label>Prénom: <input type="text" th:field="*{prenom}" required/></label><br/>
     <label>Mail: <input type="text" th:field="*{mail}" required/></label><br/>
+    <label for="roles">Rôles:</label>
+    <select id="roles" name="roles" multiple>
+      <option th:each="role : ${allRoles}" th:value="${role.idRole}" th:text="${role.nomRole}" th:selected="${utilisateur.roles.contains(role)}"></option>
+    </select>
 
     <!-- Ajoutez d'autres champs en fonction de votre entité -->
     <button type="submit" class="btn btn-primary">Modifier</button>

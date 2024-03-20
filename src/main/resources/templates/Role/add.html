@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un Rôle</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
 </head>
 <body>
-$END$
+
+<div class="container">
+    <h2>Ajouter un Rôle</h2>
+
+    <form th:action="@{/role/add}" method="post" th:object="${role}">
+        <label>Intitulé du Rôle:</label>
+        <input type="text" th:field="*{intituleRole}" required/>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+    </form>
+</div>
+
 </body>
 </html>

@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier un Type de Dépense</title>
 </head>
 <body>
-$END$
+
+<div class="container">
+    <h2>Modifier un Type de Dépense</h2>
+
+    <form th:action="@{/typeDepense/edit/{id}(id=${typeDepense.idTypeDep})}" method="post" th:object="${typeDepense}">
+        <input type="hidden" th:field="*{idTypeDep}"/>
+        <label>Nom du Type de Dépense: <input type="text" th:field="*{nomType}" required/></label><br/>
+        <button type="submit" class="btn btn-primary">Modifier</button>
+    </form>
+</div>
 </body>
 </html>

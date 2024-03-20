@@ -1,10 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Mes dépenses</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .list-group.limit-operations li:nth-child(n+6) {
+      display: none;
+    }
+
+    .navbar {
+      background-color: #343a40;
+    }
+
+    .navbar-brand, .navbar-nav .nav-link {
+      color: #ffffff;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+
+    .progress {
+      height: 30px;
+    }
+
+    .progress-bar {
+      color: #000000;
+    }
+
+    .progress-wrapper {
+      position: relative;
+    }
+
+    .progress-label {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      text-align: center;
+      font-weight: bold;
+      font-size: large;
+      color: #ffffff;
+    }
+
+    .btn-add-operation {
+      margin-bottom: 20px;
+    }
+
+    .btn-modify-limit {
+      font-size: 14px;
+    }
+  </style>
+
 </head>
 <body>
-$END$
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="http://localhost:8080/">Gestion des dépenses</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link active" href="/">Mes dépenses</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/">Mon profil</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/">Paramètres</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<br>
+
+<div class="container">
+  <div class="row mt-3">
+    <div th:each="summary, index : ${operationSummaryList}" class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title" th:text="${summary[0]}">Type de dépense</h4>
+          <div class="progress-wrapper">
+            <div class="progress">
+              <div class="progress-bar bg-success" role="progressbar"
+                   th:attr="style='width: ' + (${summary[2] != null ? summary[1] * 100 / summary[2] : 100}) + '%'"
+                   style="color: #ffffff;"></div>
+            </div>
+            <span class="progress-label"
+                  th:text="|${summary[1]} / ${summary[2] != null ? summary[2] : 'Pas de limite'}|"></span>
+          </div>
+          <!-- Bouton pour modifier la limite -->
+          <a href="/user/modifier-limite/{typeDepenseId}"
+             th:href="@{/user/modifier-limite/{typeDepenseId}(typeDepenseId=${summary[3]})}"
+             class="btn btn-primary btn-modify-limit mt-2">Modifier la limite</a>
+          <!-- Bouton pour afficher/masquer la liste des opérations -->
+          <button class="btn btn-secondary btn-toggle-list mt-2"
+                  data-target="#operation-list-${index}">Afficher/masquer les opérations</button>
+          <!-- Liste des opérations (dans le tiroir) -->
+          <div id="operation-list-${index}" class="drawer" style="display: none;">
+            <ul class="list-group mt-3">
+              <li class="list-group-item" th:each="detail : ${operationDetailsList[index.index]}"
+                  th:text="${detail}"></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ajoutez ce script JavaScript pour gérer l'affichage/masquage du tiroir -->
+<script>
+  document.querySelectorAll('.btn-toggle-list').forEach(button => {
+    button.addEventListener('click', () => {
+      const target = document.querySelector(button.dataset.target);
+      if (target) {
+        target.classList.toggle('open');
+      }
+    });
+  });
+</script>
+
+<!-- Ajoutez ce style CSS pour styliser le tiroir -->
+<style>
+  .drawer {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-top: none;
+  }
+  .drawer.open {
+    display: block;
+  }
+</style>
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 </body>
 </html>

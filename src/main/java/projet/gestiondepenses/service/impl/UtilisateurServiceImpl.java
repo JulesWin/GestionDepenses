@@ -18,10 +18,22 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         this.utilisateurRepository = utilisateurRepository;
     }
 
+    //@Override
+    //public List<Utilisateur> getAllUtilisateurs() {
+     //   return utilisateurRepository.findAll();
+    //}
+
     @Override
     public List<Utilisateur> getAllUtilisateurs() {
-        return utilisateurRepository.findAll();
+        List<Utilisateur> utilisateurs = utilisateurRepository.findAll();
+        for (Utilisateur utilisateur : utilisateurs) {
+            utilisateur.getRoles().size(); // Forcer le chargement paresseux des rôles
+            System.out.println("Utilisateur " + utilisateur.getIdUser() + " a les rôles suivants : " + utilisateur.getRoles());
+        }
+        return utilisateurs;
     }
+
+
 
     @Override
     public Utilisateur persistUtilisateur(Utilisateur utilisateur) {

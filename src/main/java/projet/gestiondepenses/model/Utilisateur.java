@@ -2,10 +2,7 @@ package projet.gestiondepenses.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "utilisateur")
@@ -38,13 +35,12 @@ public class Utilisateur {
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private List<Operation> operations;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "appartient",
             joinColumns = @JoinColumn(name = "id_user"),
-            inverseJoinColumns = @JoinColumn(name = "id_role")
-    )
-    private List<Role> roles;
+            inverseJoinColumns = @JoinColumn(name = "id_role"))
+    private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private List<Limitation> limitations = new ArrayList<>();
@@ -113,12 +109,22 @@ public class Utilisateur {
         this.operations = operations;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+        role.getUtilisateurs().add(this);
+    }
+
+    public void removeRole(Role role) {
+        this.roles.remove(role);
+        role.getUtilisateurs().remove(this);
     }
 
     public List<Limitation> getLimitations() {
@@ -128,6 +134,8 @@ public class Utilisateur {
     public void setLimitations(List<Limitation> limitations) {
         this.limitations = limitations;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

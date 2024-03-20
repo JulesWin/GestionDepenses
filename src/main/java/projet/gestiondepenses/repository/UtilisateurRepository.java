@@ -9,7 +9,6 @@ import java.util.Optional;
 @Repository
 public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> {
     List<Utilisateur> findAll();
-
     Utilisateur save(Utilisateur utilisateur);
 
     Optional<Utilisateur> findById(Long id);

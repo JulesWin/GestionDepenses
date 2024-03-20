@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modifier une Opération</title>
 </head>
 <body>
-$END$
+<div class="container">
+  <h2>Modifier une Opération</h2>
+
+  <form th:action="@{/operation/edit/{id}(id=${operation.idDep})}" method="post" th:object="${operation}">
+    <label for="montant">Montant:</label>
+    <input type="text" id="montant" name="montant" th:field="*{montant}">
+
+    <label for="idTypeDep">Type de Dépense:</label>
+    <select id="idTypeDep" name="idTypeDep">
+      <option th:each="typeDepense : ${allTypesDepense}" th:value="${typeDepense.idTypeDep}" th:text="${typeDepense.nomType}"></option>
+    </select>
+
+    <label for="idUser">Utilisateur:</label>
+    <select id="idUser" name="idUser">
+      <option th:each="utilisateur : ${allUtilisateurs}" th:value="${utilisateur.idUser}" th:text="${utilisateur.idUser}"></option>
+    </select>
+
+    <button type="submit">Modifier</button>
+  </form>
+</div>
 </body>
 </html>

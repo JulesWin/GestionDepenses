@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import projet.gestiondepenses.model.Utilisateur;
 import projet.gestiondepenses.service.UtilisateurService;
+import projet.gestiondepenses.service.RoleService;
+
 
 import java.util.List;
 import java.util.Optional;

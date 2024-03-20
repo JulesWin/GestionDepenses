@@ -4,10 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Menu des Utilisateurs</title>
-  <!-- Ajoutez le lien vers Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="http://localhost:8080/">Gestion des dépenses</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link active" href="/utilisateur">Utilisateurs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/operation">Opérations</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/role">Rôles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/typeDepense">Types de dépenses</a>
+      </li>
+      <!-- Ajoutez d'autres liens en fonction de vos besoins -->
+    </ul>
+  </div>
+</nav>
 
 <div class="container mt-5">
   <h2 class="mb-4">Menu des Utilisateurs</h2>
@@ -22,6 +45,7 @@
       <th scope="col">Prénom</th>
       <th scope="col">Mail</th>
       <th scope="col">MotDePasse</th>
+      <th scope="col">Rôles</th>
       <th scope="col">Actions</th>
     </tr>
     </thead>
@@ -32,6 +56,11 @@
       <td th:text="${utilisateur.prenom}"></td>
       <td th:text="${utilisateur.mail}"></td>
       <td th:text="${utilisateur.motDePasse}"></td>
+      <td>
+        <ul>
+          <li th:each="role : ${utilisateur.roles}" th:text="${role.nom}"></li>
+        </ul>
+      </td>
       <td>
         <a class="btn btn-warning btn-sm" th:href="@{'/utilisateur/edit/' + ${utilisateur.idUser}}">Modifier</a>
         <a class="btn btn-danger btn-sm" th:href="@{'/utilisateur/delete/' + ${utilisateur.idUser}}">Supprimer</a>

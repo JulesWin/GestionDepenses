@@ -68,6 +68,14 @@ public class Operation {
         this.typeDepense = typeDepense;
     }
 
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,6 +99,8 @@ public class Operation {
                 ", typeDepense=" + typeDepense +
                 '}';
     }
+
+
 
     public void setIdDep(Long id) {
     }

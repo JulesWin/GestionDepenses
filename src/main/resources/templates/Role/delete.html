@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supprimer un Rôle</title>
 </head>
 <body>
-$END$
+
+<div class="container">
+    <h2>Supprimer un Rôle</h2>
+
+    <form action="/role/delete/{id}" method="post" th:object="${role}">
+        <input type="hidden" th:field="*{idRole}"/>
+        <p>Voulez-vous vraiment supprimer cet utilisateur ?</p>
+        <button type="submit" class="btn btn-danger">Supprimer</button>
+    </form>
+</div>
+
 </body>
 </html>

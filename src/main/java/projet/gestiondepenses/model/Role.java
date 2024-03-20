@@ -2,8 +2,10 @@ package projet.gestiondepenses.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "role")
@@ -18,7 +20,7 @@ public class Role {
     private String intituleRole;
 
     @ManyToMany(mappedBy = "roles")
-    private List<Utilisateur> utilisateurs;
+    private Set<Utilisateur> utilisateurs = new HashSet<>();
 
     // Constructeur par défaut
     public Role() {
@@ -41,11 +43,11 @@ public class Role {
         this.intituleRole = intituleRole;
     }
 
-    public List<Utilisateur> getUtilisateurs() {
+    public Set<Utilisateur> getUtilisateurs() {
         return utilisateurs;
     }
 
-    public void setUtilisateurs(List<Utilisateur> utilisateurs) {
+    public void setUtilisateurs(Set<Utilisateur> utilisateurs) {
         this.utilisateurs = utilisateurs;
     }
 

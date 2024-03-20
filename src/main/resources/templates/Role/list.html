@@ -1,10 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Rôles</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
 </head>
 <body>
-$END$
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="http://localhost:8080/">Gestion des dépenses</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/utilisateur">Utilisateurs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/operation">Opérations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/role">Rôles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/typeDepense">Types de dépenses</a>
+            </li>
+            <!-- Ajoutez d'autres liens en fonction de vos besoins -->
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>Liste des Rôles</h2>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Intitulé du Rôle</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Utilisez une boucle Thymeleaf pour afficher les rôles -->
+        <tr th:each="role : ${roles}">
+            <td th:text="${role.idRole}"></td>
+            <td th:text="${role.intituleRole}"></td>
+            <td>
+                <!-- Ajoutez des liens vers les pages d'édition et de suppression -->
+                <a th:href="@{/role/edit/{id}(id=${role.idRole})}" class="btn btn-primary">Éditer</a>
+                <a th:href="@{/role/delete/{id}(id=${role.idRole})}" class="btn btn-danger">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/role/add}" class="btn btn-success">Ajouter un Rôle</a>
+</div>
+
 </body>
 </html>

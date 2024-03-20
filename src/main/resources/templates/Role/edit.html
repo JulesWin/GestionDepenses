@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier un Rôle</title>
 </head>
 <body>
-$END$
+
+<div class="container">
+    <h2>Modifier un Rôle</h2>
+
+    <form th:action="@{/role/edit/{id}(id=${role.idRole})}" method="post" th:object="${role}">
+        <input type="hidden" th:field="*{idRole}" />
+        <label>Intitulé du Rôle:</label>
+        <input type="text" th:field="*{intituleRole}" required/>
+        <button type="submit" class="btn btn-primary">Modifier</button>
+    </form>
+</div>
+
 </body>
 </html>

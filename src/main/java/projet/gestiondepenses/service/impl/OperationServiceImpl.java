@@ -45,4 +45,15 @@ public class OperationServiceImpl implements OperationService {
     public void deleteOperationById(Long id) {
         operationRepository.deleteById(id);
     }
+
+    @Override
+    public List<Object[]> getTotalOperationsSummaryForUser1() {
+        return operationRepository.getTotalOperationsSummaryForUser1();
+    }
+
+    @Override
+    public List<String> getOperationDetailsForTypeDepense(String typeDepense) {
+        return operationRepository.getOperationDetailsForTypeDepense(typeDepense);
+    }
+
 }

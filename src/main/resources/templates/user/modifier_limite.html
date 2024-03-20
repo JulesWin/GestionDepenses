@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Modifier la limite</title>
-    <!-- Mettez ici vos liens vers les styles CSS nécessaires -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier une limite</title>
 </head>
 <body>
+
 <div class="container">
-    <h2>Modifier la limite</h2>
-    <form action="/modifier-limite" method="post">
-        <div class="form-group">
-            <label for="nouvelleLimite">Nouvelle limite :</label>
-            <input type="number" class="form-control" id="nouvelleLimite" name="nouvelleLimite" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Modifier</button>
+    <h2>Modifier une limite</h2>
+
+    <form th:action="@{/user/modifier-limite/{typeDepenseId}(typeDepenseId=${typeDepenseId})}" method="post" th:object="${limitation}">
+        <label>Montant limite:</label>
+        <input type="number" th:field="*{montantLim}" required/>
+        <button type="submit">Modifier</button>
     </form>
 </div>
+
 </body>
 </html>
