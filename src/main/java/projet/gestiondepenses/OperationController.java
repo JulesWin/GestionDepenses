@@ -121,7 +121,7 @@ public class OperationController {
             return "redirect:/operation";
         }
     }
-    @GetMapping("/delete/{id}")
+   @GetMapping("/delete/{id}")
     public String deleteOperationForm(@PathVariable Long id, Model model) {
         try {
             // Retrieve the operation by ID

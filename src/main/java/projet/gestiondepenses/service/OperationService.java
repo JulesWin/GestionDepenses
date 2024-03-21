@@ -15,5 +15,5 @@ public interface OperationService {
     // Nouvelles méthodes pour les opérations par mois et année
     List<Object[]> getTotalOperationsSummaryForUser1ByMonthAndYear(int month, int year);
 
-    List<String> getOperationDetailsForTypeDepenseByMonthAndYear(String typeDepense, int month, int year);
+    List<Object[]> getOperationDetailsForTypeDepenseByMonthAndYear(String typeDepense, int month, int year);
 }

@@ -30,7 +30,7 @@ public interface OperationRepository extends JpaRepository<Operation, Long>{
     List<Object[]> getTotalOperationsSummaryForUser1ByMonthAndYear(@Param("month") int month, @Param("year") int year);
 
     // Nouvelle méthode pour obtenir la liste des montants et des dates des opérations pour chaque type de dépense pour un mois et une année spécifiques
-    @Query("SELECT CONCAT(o.montant, '€ le : ', " +
+    @Query("SELECT o.idDep, CONCAT(o.montant, '€ le : ', " +
             "FUNCTION('DATE_FORMAT', o.dateDep, '%m/%d à %Hh%i')) " +
             "FROM Operation o " +
             "JOIN o.typeDepense td " +
@@ -38,5 +38,6 @@ public interface OperationRepository extends JpaRepository<Operation, Long>{
             "AND FUNCTION('MONTH', o.dateDep) = :month " +
             "AND FUNCTION('YEAR', o.dateDep) = :year " +
             "AND td.nomType = :typeDepense")
-    List<String> getOperationDetailsForTypeDepenseByMonthAndYear(String typeDepense, @Param("month") int month, @Param("year") int year);
+    List<Object[]> getOperationDetailsForTypeDepenseByMonthAndYear(String typeDepense, @Param("month") int month, @Param("year") int year);
+
 }

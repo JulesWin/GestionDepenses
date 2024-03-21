@@ -63,7 +63,7 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public List<String> getOperationDetailsForTypeDepenseByMonthAndYear(String typeDepense, int month, int year) {
+    public List<Object[]> getOperationDetailsForTypeDepenseByMonthAndYear(String typeDepense, int month, int year) {
         return operationRepository.getOperationDetailsForTypeDepenseByMonthAndYear(typeDepense, month, year);
     }
 }

@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import projet.gestiondepenses.model.Limitation;
 import projet.gestiondepenses.model.Operation;
 import projet.gestiondepenses.model.TypeDepense;
@@ -53,29 +51,46 @@ public class UserController {
         int currentMonth = LocalDate.now().getMonthValue();
         int currentYear = LocalDate.now().getYear();
         List<Object[]> operationSummaryList = operationRepository.getTotalOperationsSummaryForUser1ByMonthAndYear(currentMonth, currentYear);
-        List<List<String>> operationDetailsList = new ArrayList<>();
+        List<List<Object[]>> operationDetailsList = new ArrayList<>();
         for (Object[] summary : operationSummaryList) {
-            List<String> details = operationRepository.getOperationDetailsForTypeDepenseByMonthAndYear((String) summary[0], currentMonth, currentYear);
+            List<Object[]> details = operationRepository.getOperationDetailsForTypeDepenseByMonthAndYear((String) summary[0], currentMonth, currentYear);
             operationDetailsList.add(details);
         }
+
+        // Calcule la somme des dépenses totales et des limites totales
+        double totalExpenses = 0.0;
+        double totalLimits = 0.0;
+
+        for (Object[] summary : operationSummaryList) {
+            if (summary[1] != null) {
+                totalExpenses += (double) summary[1];
+            }
+            if (summary[2] != null) {
+                totalLimits += (double) summary[2];
+            }
+        }
+        // Ajoutez les sommes calculées aux attributs du modèle pour les afficher dans la vue
         model.addAttribute("operationSummaryList", operationSummaryList);
         model.addAttribute("operationDetailsList", operationDetailsList);
+        model.addAttribute("totalExpenses", totalExpenses);
+        model.addAttribute("totalLimits", totalLimits);
+
         return "user/home";
     }
+
 
     @GetMapping("/home/{year}/{month}")
     public String afficherAccueilClientParMoisAnnee(@PathVariable int year, @PathVariable int month, Model model) {
         List<Object[]> operationSummaryList = operationRepository.getTotalOperationsSummaryForUser1ByMonthAndYear(month, year);
-        List<List<String>> operationDetailsList = new ArrayList<>();
+        List<List<Object[]>> operationDetailsList = new ArrayList<>();
         for (Object[] summary : operationSummaryList) {
-            List<String> details = operationRepository.getOperationDetailsForTypeDepenseByMonthAndYear((String) summary[0], month, year);
+            List<Object[]> details = operationRepository.getOperationDetailsForTypeDepenseByMonthAndYear((String) summary[0], month, year);
             operationDetailsList.add(details);
         }
         model.addAttribute("operationSummaryList", operationSummaryList);
         model.addAttribute("operationDetailsList", operationDetailsList);
         return "user/home";
     }
-
 
 
     @GetMapping("/modifier-limite/{typeDepenseId}")
@@ -145,6 +160,99 @@ public class UserController {
 
         return "redirect:/user/home";
     }
+
+    @GetMapping("/operation/edit/{id}")
+    public String editOperationForm(@PathVariable Long id, Model model) {
+        Long idUser = 1L; // Forcer l'utilisation de l'utilisateur avec l'ID 1
+        Optional<Operation> operationOptional = operationRepository.findById(id);
+
+        if (operationOptional.isPresent()) {
+            Operation operation = operationOptional.get();
+            List<TypeDepense> allTypesDepense = typeDepenseRepository.findAll(); // Récupérez tous les types de dépense
+            model.addAttribute("allTypesDepense", allTypesDepense);
+            model.addAttribute("operation", operation);
+            model.addAttribute("idUser", idUser); // Ajouter l'idUser au modèle
+
+
+            return "user/operation/edit";
+        } else {
+            return "redirect:/user/home"; // Redirigez vers la page d'accueil ou une autre page appropriée
+        }
+    }
+
+    @PostMapping("/operation/edit/{id}")
+    public String editOperation(@PathVariable Long id, @ModelAttribute Operation operation,
+                                @RequestParam("idTypeDep") Long idTypeDep) {
+        // Récupérer l'opération existante
+        Optional<Operation> existingOperationOptional = operationRepository.findById(id);
+
+        if (existingOperationOptional.isPresent()) {
+            Operation existingOperation = existingOperationOptional.get();
+
+            // Récupérer le type de dépense en fonction de l'ID fourni
+            Optional<TypeDepense> typeDepenseOptional = typeDepenseRepository.findById(idTypeDep);
+            if (typeDepenseOptional.isPresent()) {
+                TypeDepense typeDepense = typeDepenseOptional.get();
+                existingOperation.setMontant(operation.getMontant()); // Mettre à jour le montant de l'opération
+                existingOperation.setTypeDepense(typeDepense); // Mettre à jour le type de dépense de l'opération
+
+                // Récupérer l'utilisateur avec l'ID 1
+                Optional<Utilisateur> utilisateurOptional = UtilisateurRepository.findById(1L);
+                if (utilisateurOptional.isPresent()) {
+                    Utilisateur utilisateur = utilisateurOptional.get();
+                    existingOperation.setUtilisateur(utilisateur); // Utiliser l'utilisateur avec l'ID 1
+                } else {
+                    // Gérer le cas où l'utilisateur avec l'ID 1 n'est pas trouvé
+                    // Vous pouvez choisir de rediriger vers une page d'erreur ou prendre une autre action appropriée
+                    return "redirect:/user/home"; // Rediriger vers la page d'accueil ou une autre page appropriée
+                }
+
+                operationRepository.save(existingOperation); // Sauvegarder les modifications de l'opération
+
+                return "redirect:/user/home"; // Rediriger vers la page d'accueil
+            } else {
+                // Gérer le cas où le type de dépense n'est pas trouvé
+                return "redirect:/user/home"; // Rediriger vers la page d'accueil ou une autre page appropriée
+            }
+        } else {
+            // Gérer le cas où l'opération avec l'ID spécifié n'est pas trouvée
+            return "redirect:/user/home"; // Rediriger vers la page d'accueil ou une autre page appropriée
+        }
+    }
+
+    @GetMapping("/operation/delete/{id}")
+    public String deleteOperationForm(@PathVariable Long id, Model model) {
+        try {
+            // Retrieve the operation by ID
+            Optional<Operation> operationOptional = operationService.getOperationById(id);
+
+            if (operationOptional.isPresent()) {
+                Operation operation = operationOptional.get();
+                model.addAttribute("operation", operation);
+                return "user/operation/delete";
+            } else {
+                // Handle the case where the operation with the specified ID is not found
+                return "redirect:/user/home";
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Add appropriate logging here
+            return "redirect:/error";
+        }
+    }
+
+    @PostMapping("/operation/delete/{id}")
+    public String deleteOperation(@PathVariable Long id) {
+        try {
+            // Delete the operation using the service
+            operationService.deleteOperationById(id);
+            return "redirect:/user/home";
+        } catch (Exception e) {
+            e.printStackTrace(); // Add appropriate logging here
+            return "redirect:/error";
+        }
+    }
+
+
 
     @GetMapping("/edit")
     public String editUserProfileForm(Model model) {

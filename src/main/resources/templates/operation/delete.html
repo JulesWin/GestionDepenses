@@ -10,7 +10,7 @@
     <div class="container">
         <h2>Supprimer une Opération</h2>
 
-        <form action="@{/operation/delete/{id}}" method="post" th:object="${operation}">
+        <form action="/operation/delete/{id}" method="post" th:action="@{'/operation/delete/' + ${operation.idDep}}" th:object="${operation}">
             <input type="hidden" name="id" th:value="*{idDep}"/>
             <p>Voulez-vous vraiment supprimer cette opération ?</p>
             <button type="submit" class="btn btn-danger">Supprimer</button>

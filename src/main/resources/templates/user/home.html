@@ -82,17 +82,18 @@
     </ul>
   </div>
 </nav>
+
 <div class="container">
   <div class="row">
     <div class="col-md-3">
-      <h5>Ajouter une opération</h5><br>
+      <h5>Ajouter une opération</h5><br><br>
       <button onclick="window.location.href='/user/operation/add'" class="btn btn-primary mb-3">Ajouter une Opération</button>
     </div>
     <div class="col-md-9">
-      <h5>Changer de période</h5>
-      <div class="row" style="text-align: center;">
+      <h5>Changer de période</h5><br>
+      <div class="row justify-content-center align-items-center">
         <!-- Formulaire de sélection du mois -->
-        <div class="col-md-6">
+        <div class="col-md-4">
           <form id="monthYearForm">
             <label for="month">Mois :</label>
             <select name="month" id="month" class="form-control form-control-sm">
@@ -111,7 +112,7 @@
             </select>
         </div>
         <!-- Formulaire de sélection de l'année -->
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="year">Année :</label>
           <select name="year" id="year" class="form-control form-control-sm">
             <option value="2024" selected>2024</option>
@@ -120,15 +121,27 @@
           </select>
         </div>
         <!-- Bouton de soumission -->
-        <div class="col-md-12 mt-4">
-          <button style="height: 100%;" type="button" class="btn btn-primary btn-sm" onclick="submitForm()">Changer période</button>
+        <div class="col-md-3"><br>
+          <button style="height: 50%;" type="button" class="btn btn-primary btn-sm" onclick="submitForm()">Changer période</button>
         </div>
         </form>
       </div>
+
+
     </div>
   </div>
 </div>
 
+<div class="container mt-3">
+  <div class="row justify-content-center">
+    <div class="col-md-9">
+      <h5 class="font-weight-bold" style="text-align: center">Somme de toutes les dépenses du mois:
+        <span class="text-primary" th:text="${totalExpenses}"></span> € /
+        <span class="text-danger" th:text="${totalLimits}"></span> € de Limites
+      </h5>
+    </div>
+  </div>
+</div>
 
 
 
@@ -140,12 +153,7 @@
   }
 </script>
 
-
-
-
-
 <div class="container">
-
   <div class="row mt-3">
     <div th:each="summary, index : ${operationSummaryList}" class="col-md-6">
       <div class="card">
@@ -153,7 +161,10 @@
           <h4 class="card-title" th:text="${summary[0]}">Type de dépense</h4>
           <div class="progress-wrapper">
             <div class="progress">
-              <div class="progress-bar bg-success" role="progressbar"
+              <div th:if="${summary[2] != null && summary[1] > summary[2]}" class="progress-bar bg-danger" role="progressbar"
+                   th:attr="style='width: ' + (${summary[2] != null ? summary[1] * 100 / summary[2] : 100}) + '%'"
+                   style="color: #ffffff;"></div>
+              <div th:unless="${summary[2] != null && summary[1] > summary[2]}" class="progress-bar bg-success" role="progressbar"
                    th:attr="style='width: ' + (${summary[2] != null ? summary[1] * 100 / summary[2] : 100}) + '%'"
                    style="color: #ffffff;"></div>
             </div>
@@ -165,17 +176,23 @@
              th:href="@{/user/modifier-limite/{typeDepenseId}(typeDepenseId=${summary[3]})}"
              class="btn btn-primary btn-modify-limit mt-2">Modifier la limite</a>
           <!-- Bouton pour afficher/masquer la liste des opérations -->
-          <!-- Bouton pour afficher/masquer la liste des opérations -->
-          <button class="btn btn-secondary btn-toggle-list mt-2">Afficher/masquer les opérations</button>
+          <button  class="btn btn-secondary btn-toggle-list mt-2">Afficher/masquer les opérations</button>
           <!-- Liste des opérations -->
           <ul class="list-group mt-3 operation-list">
-            <li class="list-group-item" th:each="detail : ${operationDetailsList[index.index]}" th:text="${detail}"></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center" th:each="detail : ${operationDetailsList[index.index]}">
+              <span th:text="${detail[1]}"></span>
+              <div>
+                <a th:href="@{'/user/operation/edit/' + ${detail[0]}}" class="btn btn-sm btn-warning mr-2">Modifier</a>
+                <a th:href="@{'/user/operation/delete/' + ${detail[0]}}" class="btn btn-sm btn-danger">Supprimer</a>
+              </div>
+            </li>
           </ul>
         </div>
       </div><br>
     </div>
   </div>
 </div>
+
 
 
 <script>
@@ -193,7 +210,6 @@
 
 
 
-<!-- Ajoutez ce style CSS pour styliser le tiroir -->
 <style>
   .operation-list {
     display: none;

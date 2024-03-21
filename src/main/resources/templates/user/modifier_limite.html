@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier une limite</title>
+    <!-- Intégration des fichiers Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -32,9 +37,11 @@
     <h2>Modifier une limite</h2>
 
     <form th:action="@{/user/modifier-limite/{typeDepenseId}(typeDepenseId=${typeDepenseId})}" method="post" th:object="${limitation}">
-        <label>Montant limite:</label>
-        <input type="number" th:field="*{montantLim}" required/>
-        <button type="submit">Modifier</button>
+        <div class="form-group">
+            <label for="montantLim">Montant limite:</label>
+            <input type="number" class="form-control" id="montantLim" th:field="*{montantLim}" required/>
+        </div>
+        <button type="submit" class="btn btn-primary">Modifier</button>
     </form>
 </div>
 
