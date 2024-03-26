@@ -10,7 +10,6 @@
 <div class="container">
     <h2>Ajouter une Opération</h2>
 
-    <!-- Formulaire pour ajouter une opération -->
     <form action="/operation/add" method="post" th:object="${operation}">
         <label for="montant">Montant:</label>
         <input type="text" id="montant" name="montant" th:field="*{montant}">
@@ -24,7 +23,6 @@
             <option th:each="utilisateur : ${allUtilisateurs}" th:value="${utilisateur.idUser}" th:text="${utilisateur.idUser}"></option>
         </select>
 
-        <!-- Bouton de soumission du formulaire -->
         <input type="submit" value="Ajouter">
     </form>
 </div>

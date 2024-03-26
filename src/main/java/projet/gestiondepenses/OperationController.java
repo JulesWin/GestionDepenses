@@ -42,7 +42,6 @@ public class OperationController {
         Operation operation = new Operation();
         // Pré-remplir la date avec la date actuelle
         operation.setDateDep(new Date()); // Utilisation de java.util.Date pour la date actuelle
-        // Récupérer tous les types de dépenses et tous les utilisateurs
         List<TypeDepense> allTypesDepense = typeDepenseService.getAllTypesDepense();
         List<Utilisateur> allUtilisateurs = utilisateurService.getAllUtilisateurs();
 
@@ -55,21 +54,16 @@ public class OperationController {
     }
     @PostMapping("/add")
     public String addOperation(@ModelAttribute Operation operation, @RequestParam("idTypeDep") Long idTypeDep, @RequestParam("idUser") Long idUser) {
-        // Convertir l'ID du type de dépense en une instance persistante de TypeDepense
         TypeDepense typeDepense = typeDepenseService.getTypeDepenseById(idTypeDep)
                 .orElseThrow(() -> new RuntimeException("TypeDepense not found with ID: " + idTypeDep));
-        // Convertir l'ID de l'utilisateur en une instance persistante d'Utilisateur
         Utilisateur utilisateur = utilisateurService.getUtilisateurById(idUser)
                 .orElseThrow(() -> new RuntimeException("Utilisateur not found with ID: " + idUser));
 
-        // Utiliser la date actuelle avec les heures et les minutes
         operation.setDateDep(new Date()); // Utilisation de java.util.Date pour la date actuelle
 
-        // Assigner le type de dépense et l'utilisateur à l'opération
         operation.setTypeDepense(typeDepense);
         operation.setUtilisateur(utilisateur);
 
-        // Persistez l'opération avec les détails corrects
         operationService.persistOperation(operation);
 
         return "redirect:/operation";
@@ -90,7 +84,6 @@ public class OperationController {
 
             return "operation/edit";
         } else {
-            // Handle the case where the operation with the specified ID is not found
             return "redirect:/operation";
         }
     }
@@ -98,7 +91,6 @@ public class OperationController {
     @PostMapping("/edit/{id}")
     public String editOperation(@PathVariable Long id, @ModelAttribute Operation operation,
                                 @RequestParam("idTypeDep") Long idTypeDep, @RequestParam("idUser") Long idUser) {
-        // Retrieve the existing operation
         Optional<Operation> existingOperationOptional = operationService.getOperationById(id);
 
         if (existingOperationOptional.isPresent()) {
@@ -117,14 +109,12 @@ public class OperationController {
             operationService.persistOperation(existingOperation);
             return "redirect:/operation";
         } else {
-            // Handle the case where the operation with the specified ID is not found
             return "redirect:/operation";
         }
     }
    @GetMapping("/delete/{id}")
     public String deleteOperationForm(@PathVariable Long id, Model model) {
         try {
-            // Retrieve the operation by ID
             Optional<Operation> operationOptional = operationService.getOperationById(id);
 
             if (operationOptional.isPresent()) {
@@ -132,11 +122,10 @@ public class OperationController {
                 model.addAttribute("operation", operation);
                 return "operation/delete";
             } else {
-                // Handle the case where the operation with the specified ID is not found
                 return "redirect:/operation";
             }
         } catch (Exception e) {
-            e.printStackTrace(); // Add appropriate logging here
+            e.printStackTrace();
             return "redirect:/error";
         }
     }
@@ -144,11 +133,10 @@ public class OperationController {
     @PostMapping("/delete/{id}")
     public String deleteOperation(@PathVariable Long id) {
         try {
-            // Delete the operation using the service
             operationService.deleteOperationById(id);
             return "redirect:/operation";
         } catch (Exception e) {
-            e.printStackTrace(); // Add appropriate logging here
+            e.printStackTrace();
             return "redirect:/error";
         }
     }

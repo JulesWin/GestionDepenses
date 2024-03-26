@@ -69,7 +69,6 @@ public class UserController {
                 totalLimits += (double) summary[2];
             }
         }
-        // Ajoutez les sommes calculées aux attributs du modèle pour les afficher dans la vue
         model.addAttribute("operationSummaryList", operationSummaryList);
         model.addAttribute("operationDetailsList", operationDetailsList);
         model.addAttribute("totalExpenses", totalExpenses);
@@ -102,7 +101,6 @@ public class UserController {
         if (limitation != null) {
             model.addAttribute("limitation", limitation);
         } else {
-            // Si la limite n'existe pas, créez une nouvelle instance avec les valeurs par défaut
             limitation = new Limitation();
             limitation.setUtilisateur(utilisateur);
             limitation.setTypeDepense(typeDepenseRepository.findById(typeDepenseId).orElse(null));
@@ -132,14 +130,13 @@ public class UserController {
         Operation operation = new Operation();
         // Pré-remplir la date avec la date actuelle
         operation.setDateDep(new Date()); // Utilisation de java.util.Date pour la date actuelle
-        // Récupérer tous les types de dépenses
         List<TypeDepense> allTypesDepense = typeDepenseService.getAllTypesDepense();
 
         // Ajouter les types de dépenses au modèle
         model.addAttribute("allTypesDepense", allTypesDepense);
         model.addAttribute("operation", operation);
 
-        return "user/operation/add"; // Assurez-vous que le chemin vers la vue est correct
+        return "user/operation/add";
     }
 
     @PostMapping("/operation/add")
@@ -155,7 +152,6 @@ public class UserController {
         operation.setTypeDepense(typeDepense);
         operation.setUtilisateur(utilisateur);
 
-        // Persistez l'opération avec les détails corrects
         operationService.persistOperation(operation);
 
         return "redirect:/user/home";
@@ -168,7 +164,7 @@ public class UserController {
 
         if (operationOptional.isPresent()) {
             Operation operation = operationOptional.get();
-            List<TypeDepense> allTypesDepense = typeDepenseRepository.findAll(); // Récupérez tous les types de dépense
+            List<TypeDepense> allTypesDepense = typeDepenseRepository.findAll();
             model.addAttribute("allTypesDepense", allTypesDepense);
             model.addAttribute("operation", operation);
             model.addAttribute("idUser", idUser); // Ajouter l'idUser au modèle
@@ -176,7 +172,7 @@ public class UserController {
 
             return "user/operation/edit";
         } else {
-            return "redirect:/user/home"; // Redirigez vers la page d'accueil ou une autre page appropriée
+            return "redirect:/user/home";
         }
     }
 
@@ -202,28 +198,24 @@ public class UserController {
                     Utilisateur utilisateur = utilisateurOptional.get();
                     existingOperation.setUtilisateur(utilisateur); // Utiliser l'utilisateur avec l'ID 1
                 } else {
-                    // Gérer le cas où l'utilisateur avec l'ID 1 n'est pas trouvé
-                    // Vous pouvez choisir de rediriger vers une page d'erreur ou prendre une autre action appropriée
-                    return "redirect:/user/home"; // Rediriger vers la page d'accueil ou une autre page appropriée
+
+                    return "redirect:/user/home";
                 }
 
                 operationRepository.save(existingOperation); // Sauvegarder les modifications de l'opération
 
-                return "redirect:/user/home"; // Rediriger vers la page d'accueil
+                return "redirect:/user/home";
             } else {
-                // Gérer le cas où le type de dépense n'est pas trouvé
-                return "redirect:/user/home"; // Rediriger vers la page d'accueil ou une autre page appropriée
+                return "redirect:/user/home";
             }
         } else {
-            // Gérer le cas où l'opération avec l'ID spécifié n'est pas trouvée
-            return "redirect:/user/home"; // Rediriger vers la page d'accueil ou une autre page appropriée
+            return "redirect:/user/home";
         }
     }
 
     @GetMapping("/operation/delete/{id}")
     public String deleteOperationForm(@PathVariable Long id, Model model) {
         try {
-            // Retrieve the operation by ID
             Optional<Operation> operationOptional = operationService.getOperationById(id);
 
             if (operationOptional.isPresent()) {
@@ -231,11 +223,10 @@ public class UserController {
                 model.addAttribute("operation", operation);
                 return "user/operation/delete";
             } else {
-                // Handle the case where the operation with the specified ID is not found
                 return "redirect:/user/home";
             }
         } catch (Exception e) {
-            e.printStackTrace(); // Add appropriate logging here
+            e.printStackTrace();
             return "redirect:/error";
         }
     }
@@ -243,11 +234,10 @@ public class UserController {
     @PostMapping("/operation/delete/{id}")
     public String deleteOperation(@PathVariable Long id) {
         try {
-            // Delete the operation using the service
             operationService.deleteOperationById(id);
             return "redirect:/user/home";
         } catch (Exception e) {
-            e.printStackTrace(); // Add appropriate logging here
+            e.printStackTrace();
             return "redirect:/error";
         }
     }
@@ -261,10 +251,9 @@ public class UserController {
         if (utilisateurOptional.isPresent()) {
             Utilisateur utilisateur = utilisateurOptional.get();
             model.addAttribute("utilisateur", utilisateur);
-            return "user/edit_profile"; // Vue HTML
+            return "user/edit_profile";
         } else {
-            // Gérez le cas où l'utilisateur avec l'ID 1 n'est pas trouvé
-            return "redirect:/user/home"; // Redirigez vers une page appropriée
+            return "redirect:/user/home";
         }
     }
 
@@ -273,15 +262,14 @@ public class UserController {
         Utilisateur existingUtilisateur = utilisateurService.getUtilisateurById(1L).orElse(null);
 
         if (existingUtilisateur != null) {
-            // Mettez à jour les champs du profil
             existingUtilisateur.setNom(utilisateur.getNom());
             existingUtilisateur.setPrenom(utilisateur.getPrenom());
             existingUtilisateur.setMail(utilisateur.getMail());
             // Enregistrez les modifications
             utilisateurService.updateUtilisateur(existingUtilisateur);
-            return "redirect:/user/home"; // Redirigez vers une page appropriée
+            return "redirect:/user/home";
         } else {
-            return "redirect:/user/home"; // Redirigez vers une page appropriée
+            return "redirect:/user/home";
         }
     }
 

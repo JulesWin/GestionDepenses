@@ -30,7 +30,6 @@
 <div class="container">
     <h2>Ajouter une Opération</h2>
 
-    <!-- Formulaire pour ajouter une opération -->
     <form action="/user/operation/add" method="post" th:object="${operation}">
         <div class="form-group">
             <label for="montant">Montant:</label>
@@ -44,7 +43,6 @@
             </select>
         </div>
 
-        <!-- Bouton de soumission du formulaire -->
         <button type="submit" class="btn btn-primary">Ajouter</button>
     </form>
 </div>

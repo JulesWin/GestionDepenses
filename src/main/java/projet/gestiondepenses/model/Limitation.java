@@ -19,11 +19,11 @@ public class Limitation {
     private TypeDepense typeDepense;
 
     /*@ManyToOne
-    @JoinColumn(name = "id_user") // Nom de la colonne dans la base de données pour l'utilisateur
+    @JoinColumn(name = "id_user")
     private Utilisateur utilisateur;
 
     @ManyToOne
-    @JoinColumn(name = "id_type_dep") // Nom de la colonne dans la base de données pour le type de dépense
+    @JoinColumn(name = "id_type_dep")
     private TypeDepense typeDepense;*/
 
 

@@ -29,7 +29,6 @@ public interface OperationRepository extends JpaRepository<Operation, Long>{
             "GROUP BY td.nomType, l.montantLim")
     List<Object[]> getTotalOperationsSummaryForUser1ByMonthAndYear(@Param("month") int month, @Param("year") int year);
 
-    // Nouvelle méthode pour obtenir la liste des montants et des dates des opérations pour chaque type de dépense pour un mois et une année spécifiques
     @Query("SELECT o.idDep, CONCAT(o.montant, '€ le : ', " +
             "FUNCTION('DATE_FORMAT', o.dateDep, '%m/%d à %Hh%i')) " +
             "FROM Operation o " +

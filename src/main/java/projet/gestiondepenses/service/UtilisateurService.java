@@ -11,4 +11,10 @@ public interface UtilisateurService {
     Optional<Utilisateur> getUtilisateurById(Long id);
     Utilisateur updateUtilisateur(Utilisateur utilisateur);
     void deleteUtilisateurById(Long id);
+
+    List<Utilisateur> getAllUtilisateursWithRoles();
+
+    public List<String> getRolesNamesByUserId(Long userId);
+
+    //List<String> getRoleNamesByUserId(Long );
 }

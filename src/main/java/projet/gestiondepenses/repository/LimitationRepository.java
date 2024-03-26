@@ -17,7 +17,6 @@ public interface LimitationRepository extends JpaRepository<Limitation, Long> {
     Limitation findByUtilisateurIdAndTypeDepenseId(@Param("userId") Long userId, @Param("typeDepenseId") Long typeDepenseId);
 
 
-    // Si vous avez besoin d'autres opérations, comme la récupération de toutes les limitations pour un utilisateur spécifique, vous pouvez les ajouter ici
     @Query("SELECT l FROM Limitation l WHERE l.utilisateur.idUser = :userId AND l.typeDepense.idTypeDep = :typeDepenseId")
     List<Limitation> findByUtilisateurId(@Param("userId") Long userId);
 

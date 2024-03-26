@@ -15,7 +15,7 @@ import java.util.Optional;
 public class RoleController {
 
     @Autowired
-    private RoleService roleService; // Assurez-vous d'avoir le service correspondant
+    private RoleService roleService;
 
     @GetMapping("")
     public String listRoles(Model model) {
@@ -45,7 +45,6 @@ public class RoleController {
             model.addAttribute("role", role);
             return "role/edit";
         } else {
-            // Gérez le cas où le rôle avec l'ID spécifié n'est pas trouvé
             return "redirect:/role/list";
         }
     }
@@ -58,11 +57,9 @@ public class RoleController {
         if (existingRole != null) {
             existingRole.setIntituleRole(role.getIntituleRole());
 
-            // Enregistrez les modifications
             roleService.updateRole(existingRole);
             return "redirect:/role";
         } else {
-            // Gérer le cas où le rôle avec l'ID spécifié n'est pas trouvé
             return "redirect:/role";
         }
     }
@@ -74,7 +71,7 @@ public class RoleController {
             roleService.deleteRoleById(id);
             return "redirect:/role";
         } catch (Exception e) {
-            e.printStackTrace(); // Ajoutez des logs appropriés ici
+            e.printStackTrace();
             return "redirect:/error";
         }
     }
@@ -86,7 +83,7 @@ public class RoleController {
             roleService.deleteRoleById(id);
             return "redirect:/role/list";
         } catch (Exception e) {
-            e.printStackTrace(); // Ajoutez des logs appropriés ici
+            e.printStackTrace();
             return "redirect:/error";
         }
     }

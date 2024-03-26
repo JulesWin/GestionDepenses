@@ -1,6 +1,7 @@
 package projet.gestiondepenses.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import projet.gestiondepenses.model.Utilisateur;
 
@@ -14,4 +15,7 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
     Optional<Utilisateur> findById(Long id);
 
     void deleteById(Long id);
+
+    @Query("SELECT u FROM Utilisateur u JOIN FETCH u.roles")
+    List<Utilisateur> findAllWithRoles();
 }

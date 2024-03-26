@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modifier un Utilisateur</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 
@@ -12,20 +13,32 @@
 
   <form th:action="@{/utilisateur/edit/{id}(id=${utilisateur.idUser})}" method="post" th:object="${utilisateur}">
     <input type="hidden" th:field="*{idUser}"/>
-    <label>Nom: <input type="text" th:field="*{nom}" required/></label><br/>
-    <label>Prénom: <input type="text" th:field="*{prenom}" required/></label><br/>
-    <label>Mail: <input type="text" th:field="*{mail}" required/></label><br/>
-    <label for="roles">Rôles:</label>
-    <select id="roles" name="roles" multiple>
-      <option th:each="role : ${allRoles}" th:value="${role.idRole}" th:text="${role.nomRole}" th:selected="${utilisateur.roles.contains(role)}"></option>
-    </select>
+    <div class="form-group">
+      <label for="nom">Nom:</label>
+      <input type="text" class="form-control" th:field="*{nom}" required/>
+    </div>
+    <div class="form-group">
+      <label for="prenom">Prénom:</label>
+      <input type="text" class="form-control" th:field="*{prenom}" required/>
+    </div>
+    <div class="form-group">
+      <label for="mail">Mail:</label>
+      <input type="text" class="form-control" th:field="*{mail}" required/>
+    </div>
+    <div class="form-group">
+      <label for="roles">Rôles:</label>
+      <select id="roles" name="selectedRoleIds" class="form-control" multiple>
+        <option th:each="role : ${roles}"
+                th:value="${role.idRole}"
+                th:text="${role.intituleRole}"
+                th:selected="${#lists.contains(utilisateur.roles, role)}"></option>
+      </select>
+    </div>
 
-    <!-- Ajoutez d'autres champs en fonction de votre entité -->
     <button type="submit" class="btn btn-primary">Modifier</button>
   </form>
-
-
 </div>
+
 
 </body>
 </html>

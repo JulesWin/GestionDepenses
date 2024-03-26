@@ -5,9 +5,13 @@ import org.springframework.stereotype.Service;
 import projet.gestiondepenses.model.Utilisateur;
 import projet.gestiondepenses.repository.UtilisateurRepository;
 import projet.gestiondepenses.service.UtilisateurService;
+import projet.gestiondepenses.model.Role;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
 
@@ -56,4 +60,22 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public void deleteUtilisateurById(Long id) {
         utilisateurRepository.deleteById(id);
     }
+
+    @Override
+    public List<Utilisateur> getAllUtilisateursWithRoles() {
+        return utilisateurRepository.findAllWithRoles();
+    }
+
+    @Override
+    public List<String> getRolesNamesByUserId(Long userId) {
+        Utilisateur utilisateur = utilisateurRepository.findById(userId).orElse(null);
+        if (utilisateur != null) {
+            return utilisateur.getRoles()
+                    .stream()
+                    .map(Role::getIntituleRole)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
 }

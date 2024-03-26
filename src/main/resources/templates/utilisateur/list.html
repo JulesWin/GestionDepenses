@@ -44,7 +44,6 @@
       <th scope="col">Nom</th>
       <th scope="col">Prénom</th>
       <th scope="col">Mail</th>
-      <th scope="col">MotDePasse</th>
       <th scope="col">Rôles</th>
       <th scope="col">Actions</th>
     </tr>
@@ -55,10 +54,15 @@
       <td th:text="${utilisateur.nom}"></td>
       <td th:text="${utilisateur.prenom}"></td>
       <td th:text="${utilisateur.mail}"></td>
-      <td th:text="${utilisateur.motDePasse}"></td>
+      <!-- Je veux afficher ici le résultat de :
+            SELECT role.intitule_role
+            FROM role, appartient
+            WHERE role.id_role = appartient.id_role
+            AND appartient.id_user = ${utilisateur.idUser};
+            à la place du <td> suivant-->
       <td>
         <ul>
-          <li th:each="role : ${utilisateur.roles}" th:text="${role.nom}"></li>
+          <li th:each="role : ${rolesByUserId[utilisateur.idUser]}" th:text="${role}"></li>
         </ul>
       </td>
       <td>
